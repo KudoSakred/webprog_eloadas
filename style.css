@@ -19,6 +19,7 @@ main {
 
 header {
     background-color: #A97D54;
+    min-height: 25vh;
 }
 
 footer {
