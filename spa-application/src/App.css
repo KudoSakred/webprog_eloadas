@@ -1,0 +1,14 @@
+.container { text-align: center; font-family: Arial, sans-serif; background: #dfd4c3; min-height: 100vh; color: white; padding: 20px; }
+nav button { margin: 10px; padding: 10px 20px; cursor: pointer; font-size: 16px; border-radius: 5px; border: none; background: #61dafb; }
+nav button:hover { background: #21a1f1; }
+
+/* Számológép stílus */
+.calc-container { background: #333; display: inline-block; padding: 20px; border-radius: 10px; }
+.display { background: #47614b; color: #cfcdcd; font-size: 24px; padding: 0px; text-align: right; margin-bottom: 10px; border-radius: 5px; height: 30px; }
+.buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.buttons button { padding: 15px; font-size: 18px; border-radius: 5px; border: none; cursor: pointer; }
+
+/* Snake stílus */
+.game-board { position: relative; margin: 20px auto; background: #535f52; border: 5px solid #1b1b1b; }
+.snake-dot { position: absolute; background: #4caf50; width: 20px; height: 20px; border: 1px solid #2e7d32; }
+.food-dot { position: absolute; background: #f44336; width: 20px; height: 20px; border-radius: 50%; }

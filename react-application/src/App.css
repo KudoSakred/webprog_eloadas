@@ -1,8 +1,8 @@
 :root {
   --primary: #6366f1;
   --primary-hover: #4f46e5;
-  --bg: #f8fafc;
-  --card-bg: #ffffff;
+  --bg: #dfd4c3;
+  --card-bg: #dfd4c3;
   --text-main: #1e293b;
   --text-muted: #64748b;
   --danger: #ef4444;
@@ -38,7 +38,7 @@ h1 {
   background: var(--card-bg);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 25px -5px rgba(243, 237, 237, 0.05), 0 8px 10px -6px rgba(255, 255, 255, 0.05);
   margin-bottom: 2rem;
 }
 
