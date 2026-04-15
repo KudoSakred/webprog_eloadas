@@ -6,7 +6,7 @@ function App() {
   return (
     <Router>
       {/* The Navbar stays on every page */}
-      <nav style={{ padding: '20px', background: '#2d2430' }}>
+      <nav style={{ padding: '20px', background: '#A97D54' }}>
         <Link to="/" style={{ marginRight: '15px' }}>Data Manager (CRUD)</Link>
         <Link to="/game">Play Game</Link>
       </nav>
