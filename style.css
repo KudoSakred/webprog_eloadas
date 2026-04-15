@@ -9,6 +9,14 @@ main {
     flex: 1;
 }
 
+.pagetitle {
+    margin-bottom: 5%;
+}
+
+.tablecon{
+    margin-top: 2%;
+}
+
 header {
     background-color: #A97D54;
 }
