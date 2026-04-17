@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const GRID_SIZE = 20;
-const TICK_RATE = 150;
+
+// Nehézségi szintekhez tartozó sebességek (ms)
+const SPEEDS = {
+  Könnyű: 200,
+  Közepes: 120,
+  Nehéz: 70
+};
 
 const SnakeGame = () => {
   const [snake, setSnake] = useState([[10, 5], [10, 4], [10, 3]]);
@@ -9,14 +15,17 @@ const SnakeGame = () => {
   const [direction, setDirection] = useState({ x: 0, y: 1 });
   const [gameOver, setGameOver] = useState(false);
   const [isPaused, setIsPaused] = useState(true);
-  const [score, setScore] = useState(0); // ÚJ: Pontszám állapota
-  const [highScore, setHighScore] = useState(0); // ÚJ: Rekord pontszám
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  
+  // ÚJ: Nehézségi fok állapota
+  const [difficulty, setDifficulty] = useState('Közepes');
 
   const lastDirection = useRef({ x: 0, y: 1 });
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      switch (e.key) {
+      switch (e.key.toLowerCase()) {
         case "w": if (lastDirection.current.x !== 1) setDirection({ x: -1, y: 0 }); break;
         case "s": if (lastDirection.current.x !== -1) setDirection({ x: 1, y: 0 }); break;
         case "a": if (lastDirection.current.y !== 1) setDirection({ x: 0, y: -1 }); break;
@@ -36,17 +45,18 @@ const SnakeGame = () => {
         const head = prev[0];
         const newHead = [head[0] + direction.x, head[1] + direction.y];
 
+        // Ütközés ellenőrzése
         if (newHead[0] < 0 || newHead[0] >= GRID_SIZE || newHead[1] < 0 || newHead[1] >= GRID_SIZE ||
             prev.some((s) => s[0] === newHead[0] && s[1] === newHead[1])) {
           setGameOver(true);
-          if (score > highScore) setHighScore(score); // Rekord frissítése
           return prev;
         }
 
         const newSnake = [newHead, ...prev];
 
+        // Étel megevése
         if (newHead[0] === food[0] && newHead[1] === food[1]) {
-          setScore(s => s + 10); // ÚJ: 10 pont minden gyümölcsért
+          setScore(s => s + 10);
           generateFood();
         } else {
           newSnake.pop();
@@ -57,9 +67,17 @@ const SnakeGame = () => {
       });
     };
 
-    const interval = setInterval(moveSnake, TICK_RATE);
+    // A TICK_RATE most már a kiválasztott nehézségtől függ
+    const interval = setInterval(moveSnake, SPEEDS[difficulty]);
     return () => clearInterval(interval);
-  }, [direction, food, isPaused, gameOver, score, highScore]);
+  }, [direction, food, isPaused, gameOver, difficulty]);
+
+  // Rekord frissítése, ha vége a játéknak
+  useEffect(() => {
+    if (gameOver && score > highScore) {
+      setHighScore(score);
+    }
+  }, [gameOver, score, highScore]);
 
   const generateFood = () => {
     setFood([Math.floor(Math.random() * GRID_SIZE), Math.floor(Math.random() * GRID_SIZE)]);
@@ -69,14 +87,14 @@ const SnakeGame = () => {
     setSnake([[10, 5], [10, 4], [10, 3]]);
     setDirection({ x: 0, y: 1 });
     lastDirection.current = { x: 0, y: 1 };
-    setScore(0); // Pontszám nullázása
+    setScore(0);
     setGameOver(false);
     setIsPaused(false);
     generateFood();
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px', fontFamily: 'Arial, sans-serif' }}>
       <div style={{ display: 'flex', gap: '30px', fontSize: '20px', fontWeight: 'bold' }}>
         <div style={{ color: '#4CAF50' }}>Pontszám: {score}</div>
         <div style={{ color: '#FFD700' }}>Rekord: {highScore}</div>
@@ -89,7 +107,6 @@ const SnakeGame = () => {
         backgroundColor: '#1a1a1a',
         border: '4px solid #333',
         borderRadius: '8px',
-        boxShadow: '0 0 20px rgba(0,0,0,0.5)'
       }}>
         {snake.map((p, i) => (
           <div key={i} style={{
@@ -112,7 +129,6 @@ const SnakeGame = () => {
           height: 18,
           backgroundColor: '#F44336',
           borderRadius: '50%',
-          boxShadow: '0 0 10px #F44336',
           zIndex: 1
         }} />
 
@@ -120,23 +136,50 @@ const SnakeGame = () => {
           <div style={{
             position: 'absolute',
             top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.8)',
+            backgroundColor: 'rgba(0,0,0,0.85)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
             color: 'white',
-            borderRadius: '4px',
-            zIndex: 10
+            zIndex: 10,
+            textAlign: 'center'
           }}>
             {gameOver ? (
-              <div style={{ textAlign: 'center', marginBottom: '15px' }}>
-                <h2 style={{ color: '#F44336', margin: '0' }}>VÉGE A JÁTÉKNAK</h2>
+              <div style={{ marginBottom: '20px' }}>
+                <h2 style={{ color: '#F44336' }}>VÉGE A JÁTÉKNAK</h2>
                 <p>Elért pontszám: {score}</p>
               </div>
             ) : (
-              <h2 style={{ marginBottom: '15px' }}>Snake Játék</h2>
+              <h2 style={{ marginBottom: '20px' }}>Kígyós Játék</h2>
             )}
+
+            {/* NEHÉZSÉG VÁLASZTÓ */}
+            {!gameOver && isPaused && (
+              <div style={{ marginBottom: '20px' }}>
+                <p style={{ marginBottom: '10px' }}>Válassz nehézséget:</p>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  {Object.keys(SPEEDS).map((level) => (
+                    <button
+                      key={level}
+                      onClick={() => setDifficulty(level)}
+                      style={{
+                        padding: '8px 15px',
+                        cursor: 'pointer',
+                        background: difficulty === level ? '#4CAF50' : '#444',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        transition: '0.3s'
+                      }}
+                    >
+                      {level}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <button 
               onClick={resetGame}
               style={{ 
@@ -155,7 +198,9 @@ const SnakeGame = () => {
           </div>
         )}
       </div>
-      <p style={{ color: '#aaa', fontSize: '14px' }}>Használd a nyilakat a mozgáshoz!</p>
+      <p style={{ color: '#534e4e', fontSize: '14px' }}>
+        Nehézség: <strong>{difficulty}</strong> | Irányítás: W, A, S, D
+      </p>
     </div>
   );
 };
