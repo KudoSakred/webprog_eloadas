@@ -3,7 +3,7 @@
 $host = "localhost"; 
 $db = "adatbazis969"; 
 $user = "adatbazis969";  
-$pass = "getdata9161"; 
+$pass = "*******"; 
 
 try {
     
