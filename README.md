@@ -1,13 +1,9 @@
-(A README.md-t változtatni fogjuk a jövőben)
-
 Megadott feladatok:
 
-Föoldal Menü,
-JavaScript Menü,
-React Menű,
-SPA Menű,
-Fetch API Menű,
-Axios Menű,
-OOJs Menű,
-
-Majd a Github projektet feltöltöm Google Drive-ra, PDF fájlban is található a dokumentáció.
+Föoldal Menü (Wratek),
+JavaScript Menü (Wratek),
+React Menű (KudoSakred),
+SPA Menű (KudoSakred),
+Fetch API Menű (Wratek),
+Axios Menű (KudoSakred),
+OOJs Menű (Wratek),
